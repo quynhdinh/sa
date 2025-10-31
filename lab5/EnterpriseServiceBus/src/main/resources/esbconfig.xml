@@ -9,6 +9,11 @@
 
 	<channel id="warehousechannel"/>
 	<channel id="shippingchannel"/>
+	<channel id="normalShippingChannel"/>
+	<channel id="nextDayShippingChannel"/>
+	<router method="route" input-channel="shippingchannel">
+		<beans:bean class="esb.ShippingRouter"/>
+	</router>
 
 	<service-activator input-channel="warehousechannel"
 	                   output-channel="shippingchannel"
@@ -18,9 +23,13 @@
 	<service-activator input-channel="shippingchannel"
 	                   ref="shippingservice"
 	                   method="ship"/>
+	<service-activator input-channel="nextDayShippingChannel"
+	                   ref="nextdayshippingservice"
+	                   method="nextDayShip"/>
 	                   
 	<beans:bean id="warehouseservice" class="esb.WarehouseActivator"/>
 	<beans:bean id="shippingservice" class="esb.ShippingActivator"/>
+	<beans:bean id="nextdayshippingservice" class="esb.NextDayShippingActivator"/>
 
 	
 </beans:beans>
