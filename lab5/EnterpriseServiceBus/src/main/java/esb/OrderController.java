@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class OrderController {
     @Autowired
-    @Qualifier("wharehousechannel")
+    @Qualifier("warehousechannel")
     MessageChannel warehouseChannel;
 
     @PostMapping("/orders")

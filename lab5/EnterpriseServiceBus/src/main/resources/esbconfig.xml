@@ -7,10 +7,10 @@
 			http://www.springframework.org/schema/integration
 			http://www.springframework.org/schema/integration/spring-integration.xsd">
 
-	<channel id="wharehousechannel"/>
+	<channel id="warehousechannel"/>
 	<channel id="shippingchannel"/>
 
-	<service-activator input-channel="wharehousechannel"
+	<service-activator input-channel="warehousechannel"
 	                   output-channel="shippingchannel"
 	                   ref="warehouseservice"
 	                   method="checkStock"/>
