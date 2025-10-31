@@ -9,27 +9,41 @@
 
 	<channel id="warehousechannel"/>
 	<channel id="shippingchannel"/>
+	<channel id="domesticShippingChannel"/>
+	<channel id="internationalShippingChannel"/>
 	<channel id="normalShippingChannel"/>
 	<channel id="nextDayShippingChannel"/>
-	<router method="route" input-channel="shippingchannel">
-		<beans:bean class="esb.ShippingRouter"/>
-	</router>
 
+	<!-- Warehouse checks stock then forwards to shippingchannel -->
 	<service-activator input-channel="warehousechannel"
-	                   output-channel="shippingchannel"
-	                   ref="warehouseservice"
-	                   method="checkStock"/>
-	                   
-	<service-activator input-channel="shippingchannel"
-	                   ref="shippingservice"
-	                   method="ship"/>
-	<service-activator input-channel="nextDayShippingChannel"
-	                   ref="nextdayshippingservice"
-	                   method="nextDayShip"/>
-	                   
-	<beans:bean id="warehouseservice" class="esb.WarehouseActivator"/>
-	<beans:bean id="shippingservice" class="esb.ShippingActivator"/>
-	<beans:bean id="nextdayshippingservice" class="esb.NextDayShippingActivator"/>
+					   output-channel="shippingchannel"
+					   ref="warehouseservice"
+					   method="checkStock"/>
 
+	<!-- First router: route by orderType -->
+	<router input-channel="shippingchannel" ref="orderTypeRouter" method="route"/>
+	<!-- Second router: for domestic orders, choose next-day or normal based on amount -->
+	<router input-channel="domesticShippingChannel" ref="domesticRouter" method="route"/>
+
+	<!-- Service activators for each shipping type -->
+	<service-activator input-channel="normalShippingChannel"
+					   ref="normalshippingservice"
+					   method="ship"/>
+
+	<service-activator input-channel="nextDayShippingChannel"
+					   ref="nextdayshippingservice"
+					   method="nextDayShip"/>
+
+	<service-activator input-channel="internationalShippingChannel"
+					   ref="internationalshippingservice"
+					   method="ship"/>
+
+	<!-- Beans -->
+	<beans:bean id="warehouseservice" class="esb.WarehouseActivator"/>
+	<beans:bean id="orderTypeRouter" class="esb.OrderTypeRouter"/>
+	<beans:bean id="domesticRouter" class="esb.DomesticShippingRouter"/>
+	<beans:bean id="normalshippingservice" class="esb.NormalShippingActivator"/>
+	<beans:bean id="nextdayshippingservice" class="esb.NextDayShippingActivator"/>
+	<beans:bean id="internationalshippingservice" class="esb.InternationalShippingActivator"/>
 	
 </beans:beans>

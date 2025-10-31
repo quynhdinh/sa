@@ -1,0 +1,11 @@
+# ignore IntelliJ IDEA files at all levels
+.idea/
+# ignore Maven target folders
+**/target/
+# ignore Eclipse project files
+.project
+.classpath
+.settings/
+# ignore Gradle build folders
+**/build/
+# ignore MacOS system files

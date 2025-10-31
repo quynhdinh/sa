@@ -20,10 +20,10 @@ public class ESBApplication implements CommandLineRunner {
 		SpringApplication.run(ESBApplication.class, args);
 	}
 
-
 	@Override
 	public void run(String... args) throws Exception {
-		restTemplate.postForLocation("http://localhost:8080/orders", new Order("334", 120.0));
-		restTemplate.postForLocation("http://localhost:8080/orders", new Order("355", 185.0));
+		restTemplate.postForLocation("http://localhost:8080/orders", Order.makeDomestic("334", 120.0));
+		restTemplate.postForLocation("http://localhost:8080/orders", Order.makeDomestic("335", 180.0));
+		restTemplate.postForLocation("http://localhost:8080/orders", Order.makeInternational("355", 185.0));
 	}
 }
