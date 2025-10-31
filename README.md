@@ -5,6 +5,8 @@ make a table of contents for the following notes:
 - [Day 1: Introduction to Software Architecture](#day-1-introduction-to-software-architecture)
 - [Day 2: Domain-Driven Design (DDD)](#day-2-domain-driven-design-ddd)
 - [Day 3: Databases](#day-3-databases)
+- [Day 4: Component-Based Architecture](#day-4-component-based-architecture)
+- [Day 5: SOA](#day-5-soa)
 
 # Day 1: Introduction to Software Architecture
 - There is no silver bullet [Fred Brooks, 1986](https://worrydream.com/refs/Brooks_1986_-_No_Silver_Bullet.pdf)
@@ -79,3 +81,17 @@ Project Idea: Event-Driven E-Commerce Platform
 - Implement microservices architecture to ensure scalability and maintainability.
 - Apply event sourcing to capture and store all changes to the application state as a sequence of events.
 - Use integration patterns to connect various services and ensure smooth data flow across the platform.
+
+# Day 4: Component-Based Architecture
+- Component-based architecture is a design approach that emphasizes the use of reusable, modular components to build.
+- Components communicate changes via events.
+# Day 5: SOA
+1. Stove pipes: isolated systems that do not communicate with each other.
+2. Copies of data + logic: multiple systems maintaining their own copies of data and logic.
+3. Cut up with business processes: systems that are fragmented and do not align with business processes.
+   
+These issues can be solved by ESB
+1. No stove pipes: all systems are connected through the ESB.
+2. Single copy of data + logic: centralized data and logic management.
+3. Align with business processes: systems are designed to support and enhance business processes.
+Hub and spoke architecture: a centralized hub (ESB) connects multiple spokes (services), facilitating communication and data exchange between them.
