@@ -13,14 +13,6 @@ public class Order {
 		this.paymentMethod = paymentMethod;
 	}
 
-	// public static Order makeDomestic(String orderNumber, double amount, String paymentMethod) {
-	// 	return new Order(orderNumber, amount, "domestic", paymentMethod);
-	// }
-
-	// public static Order makeInternational(String orderNumber, double amount, String paymentMethod) {
-	// 	return new Order(orderNumber, amount, "international", paymentMethod);
-	// }
-
 	public String getOrderNumber() {
 		return orderNumber;
 	}

@@ -7,8 +7,8 @@
 			http://www.springframework.org/schema/integration
 			http://www.springframework.org/schema/integration/spring-integration.xsd">
 
-	<channel id="warehousechannel"/>
-	<channel id="shippingchannel"/>
+	<publish-subscribe-channel id="warehousechannel"/>
+	<publish-subscribe-channel id="shippingchannel"/>
 	<channel id="domesticShippingChannel"/>
 	<channel id="internationalShippingChannel"/>
 	<channel id="normalShippingChannel"/>
@@ -17,13 +17,18 @@
 	<channel id="visaPaymentChannel"/>
 	<channel id="mastercardPaymentChannel"/>
 	<channel id="paypalPaymentChannel"/>
-	<channel id="paymentchannel"/>
+	<publish-subscribe-channel id="paymentchannel"/>
 
 	<!-- Warehouse checks stock then forwards to shippingchannel -->
 	<service-activator input-channel="warehousechannel"
 					   output-channel="shippingchannel"
 					   ref="warehouseservice"
 					   method="checkStock"/>
+
+	<!-- Monitoring: subscribe to channels to log process steps -->
+	<service-activator input-channel="warehousechannel" ref="warehouseMonitor" method="log"/>
+	<service-activator input-channel="shippingchannel" ref="shippingMonitor" method="log"/>
+	<service-activator input-channel="paymentchannel" ref="paymentMonitor" method="log"/>
 
 	<!-- First router: route by orderType -->
 	<router input-channel="shippingchannel" ref="orderTypeRouter" method="route"/>
@@ -63,5 +68,16 @@
 	<beans:bean id="domesticRouter" class="esb.routers.DomesticShippingRouter"/>
 	<beans:bean id="shippingservice" class="esb.activators.ShippingActivator"/>
 	<beans:bean id="paymentservice" class="esb.activators.PaymentActivator"/>
+
+	<!-- Monitoring beans -->
+	<beans:bean id="warehouseMonitor" class="esb.activators.MonitorActivator">
+		<beans:property name="source" value="warehouse"/>
+	</beans:bean>
+	<beans:bean id="shippingMonitor" class="esb.activators.MonitorActivator">
+		<beans:property name="source" value="shipping"/>
+	</beans:bean>
+	<beans:bean id="paymentMonitor" class="esb.activators.MonitorActivator">
+		<beans:property name="source" value="payment"/>
+	</beans:bean>
 
 </beans:beans>
