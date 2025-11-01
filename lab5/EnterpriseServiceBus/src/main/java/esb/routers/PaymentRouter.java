@@ -4,7 +4,6 @@ import esb.Order;
 
 public class PaymentRouter {
     public String route(Order order) {
-        System.out.println("PaymentRouter::route");
         String payment = order.getPaymentMethod();
         if(payment != null) {
             if(payment.equalsIgnoreCase("visa")) {

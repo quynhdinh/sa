@@ -35,37 +35,33 @@
 	<!-- Service activators for each shipping type -->
 	<service-activator input-channel="normalShippingChannel"
 						output-channel="paymentchannel"
-					   ref="normalshippingservice"
-					   method="ship"/>
+					   ref="shippingservice"
+					   method="shipNormal"/>
 
 	<service-activator input-channel="nextDayShippingChannel"
 					   output-channel="paymentchannel"
-					   ref="nextdayshippingservice"
-					   method="ship"/>
+					   ref="shippingservice"
+					   method="shipNextDay"/>
 
 	<service-activator input-channel="internationalShippingChannel"
 					   output-channel="paymentchannel"
-					   ref="internationalshippingservice"
-					   method="ship"/>
+					   ref="shippingservice"
+					   method="shipInternational"/>
 	<service-activator input-channel="visaPaymentChannel"
-					   ref="visaPaymentService"
-					   method="pay"/>
+					   ref="paymentservice"
+					   method="payVisa"/>
 	<service-activator input-channel="mastercardPaymentChannel"
-					   ref="mastercardPaymentService"
-					   method="pay"/>
+					   ref="paymentservice"
+					   method="payMastercard"/>
 	<service-activator input-channel="paypalPaymentChannel"
-					   ref="paypalPaymentService"
-					   method="pay"/>
+					   ref="paymentservice"
+					   method="payPaypal"/>
 	<!-- Beans -->
 	<beans:bean id="warehouseservice" class="esb.activators.WarehouseActivator"/>
 	<beans:bean id="orderTypeRouter" class="esb.routers.OrderTypeRouter"/>
 	<beans:bean id="paymentRouter" class="esb.routers.PaymentRouter"/>
 	<beans:bean id="domesticRouter" class="esb.routers.DomesticShippingRouter"/>
-	<beans:bean id="normalshippingservice" class="esb.activators.shipping.NormalShippingActivator"/>
-	<beans:bean id="nextdayshippingservice" class="esb.activators.shipping.NextDayShippingActivator"/>
-	<beans:bean id="internationalshippingservice" class="esb.activators.shipping.InternationalShippingActivator"/>
-	<beans:bean id="visaPaymentService" class="esb.activators.payment.VisaPaymentActivator"/>
-	<beans:bean id="mastercardPaymentService" class="esb.activators.payment.MastercardPaymentActivator"/>
-	<beans:bean id="paypalPaymentService" class="esb.activators.payment.PaypalPaymentActivator"/>
+	<beans:bean id="shippingservice" class="esb.activators.ShippingActivator"/>
+	<beans:bean id="paymentservice" class="esb.activators.PaymentActivator"/>
 
 </beans:beans>
