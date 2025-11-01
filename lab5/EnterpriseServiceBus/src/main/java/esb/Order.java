@@ -4,11 +4,13 @@ public class Order {
 	private String orderNumber;
 	private double amount;
 	private String orderType;
+	private String paymentMethod;
 
-	public Order(String orderNumber, double amount, String orderType) {
+	public Order(String orderNumber, double amount, String orderType, String paymentMethod) {
 		this.orderNumber = orderNumber;
 		this.amount = amount;
 		this.orderType = orderType;
+		this.paymentMethod = paymentMethod;
 	}
 
 	public String getOrderNumber() {
@@ -34,10 +36,22 @@ public class Order {
 	public void setOrderType(String orderType) {
 		this.orderType = orderType;
 	}
+	public String getPaymentMethod() {
+		return paymentMethod;
+	}
+
+	public void setPaymentMethod(String paymentMethod) {
+		this.paymentMethod = paymentMethod;
+	}
 
 	@Override
-	public String toString(){
-		return "order: nr="+orderNumber+" amount="+amount+" type="+orderType;
+	public String toString() {
+		return "Order{" +
+				"orderNumber='" + orderNumber + '\'' +
+				", amount=" + amount +
+				", orderType='" + orderType + '\'' +
+				", paymentMethod='" + paymentMethod + '\'' +
+				'}';
 	}
 
 }

@@ -1,4 +1,6 @@
-package esb;
+package esb.routers;
+
+import esb.Order;
 
 public class DomesticShippingRouter {
     public String route(Order order) {

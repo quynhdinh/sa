@@ -13,6 +13,11 @@
 	<channel id="internationalShippingChannel"/>
 	<channel id="normalShippingChannel"/>
 	<channel id="nextDayShippingChannel"/>
+	<!-- payment -->
+	<channel id="visaPaymentChannel"/>
+	<channel id="mastercardPaymentChannel"/>
+	<channel id="paypalPaymentChannel"/>
+	<channel id="paymentchannel"/>
 
 	<!-- Warehouse checks stock then forwards to shippingchannel -->
 	<service-activator input-channel="warehousechannel"
@@ -24,26 +29,43 @@
 	<router input-channel="shippingchannel" ref="orderTypeRouter" method="route"/>
 	<!-- Second router: for domestic orders, choose next-day or normal based on amount -->
 	<router input-channel="domesticShippingChannel" ref="domesticRouter" method="route"/>
+	<!-- Third router: route by payment method -->
+	<router input-channel="paymentchannel" ref="paymentRouter" method="route"/>
 
 	<!-- Service activators for each shipping type -->
 	<service-activator input-channel="normalShippingChannel"
+						output-channel="paymentchannel"
 					   ref="normalshippingservice"
 					   method="ship"/>
 
 	<service-activator input-channel="nextDayShippingChannel"
+					   output-channel="paymentchannel"
 					   ref="nextdayshippingservice"
-					   method="nextDayShip"/>
-
-	<service-activator input-channel="internationalShippingChannel"
-					   ref="internationalshippingservice"
 					   method="ship"/>
 
+	<service-activator input-channel="internationalShippingChannel"
+					   output-channel="paymentchannel"
+					   ref="internationalshippingservice"
+					   method="ship"/>
+	<service-activator input-channel="visaPaymentChannel"
+					   ref="visaPaymentService"
+					   method="pay"/>
+	<service-activator input-channel="mastercardPaymentChannel"
+					   ref="mastercardPaymentService"
+					   method="pay"/>
+	<service-activator input-channel="paypalPaymentChannel"
+					   ref="paypalPaymentService"
+					   method="pay"/>
 	<!-- Beans -->
-	<beans:bean id="warehouseservice" class="esb.WarehouseActivator"/>
-	<beans:bean id="orderTypeRouter" class="esb.OrderTypeRouter"/>
-	<beans:bean id="domesticRouter" class="esb.DomesticShippingRouter"/>
-	<beans:bean id="normalshippingservice" class="esb.NormalShippingActivator"/>
-	<beans:bean id="nextdayshippingservice" class="esb.NextDayShippingActivator"/>
-	<beans:bean id="internationalshippingservice" class="esb.InternationalShippingActivator"/>
-	
+	<beans:bean id="warehouseservice" class="esb.activators.WarehouseActivator"/>
+	<beans:bean id="orderTypeRouter" class="esb.routers.OrderTypeRouter"/>
+	<beans:bean id="paymentRouter" class="esb.routers.PaymentRouter"/>
+	<beans:bean id="domesticRouter" class="esb.routers.DomesticShippingRouter"/>
+	<beans:bean id="normalshippingservice" class="esb.activators.shipping.NormalShippingActivator"/>
+	<beans:bean id="nextdayshippingservice" class="esb.activators.shipping.NextDayShippingActivator"/>
+	<beans:bean id="internationalshippingservice" class="esb.activators.shipping.InternationalShippingActivator"/>
+	<beans:bean id="visaPaymentService" class="esb.activators.payment.VisaPaymentActivator"/>
+	<beans:bean id="mastercardPaymentService" class="esb.activators.payment.MastercardPaymentActivator"/>
+	<beans:bean id="paypalPaymentService" class="esb.activators.payment.PaypalPaymentActivator"/>
+
 </beans:beans>

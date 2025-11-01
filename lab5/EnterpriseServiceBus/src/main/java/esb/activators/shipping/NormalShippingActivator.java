@@ -1,7 +1,9 @@
-package esb;
+package esb.activators.shipping;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
+
+import esb.Order;
 
 public class NormalShippingActivator {
 
