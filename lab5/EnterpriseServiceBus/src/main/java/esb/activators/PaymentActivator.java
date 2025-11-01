@@ -7,6 +7,7 @@ public class PaymentActivator {
     
 	@Autowired
 	RestTemplate restTemplate;
+    // sending payment requests to different payment services
     public void payVisa() {
         System.out.println("Processing Visa payment");
     }
