@@ -7,6 +7,7 @@ make a table of contents for the following notes:
 - [Day 3: Databases](#day-3-databases)
 - [Day 4: Component-Based Architecture](#day-4-component-based-architecture)
 - [Day 5: SOA](#day-5-soa)
+- [Day 6: Microservices](#day-6-microservices)
 
 # Day 1: Introduction to Software Architecture
 - There is no silver bullet [Fred Brooks, 1986](https://worrydream.com/refs/Brooks_1986_-_No_Silver_Bullet.pdf)
@@ -95,3 +96,11 @@ These issues can be solved by ESB
 2. Single copy of data + logic: centralized data and logic management.
 3. Align with business processes: systems are designed to support and enhance business processes.
 Hub and spoke architecture: a centralized hub (ESB) connects multiple spokes (services), facilitating communication and data exchange between them.
+
+# Day 6: Microservices
+Microservices architecture is an architectural style that structures an application as a collection of small, autonomous services.
+DDD Aggregate: a cluster of domain objects that can be treated as a single unit.
+
+Consul: a service mesh solution providing service discovery, configuration, and segmentation functionality.
+
+Feign Client: a declarative web service client that simplifies the process of making HTTP requests to other services.
