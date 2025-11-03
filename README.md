@@ -8,6 +8,7 @@ make a table of contents for the following notes:
 - [Day 4: Component-Based Architecture](#day-4-component-based-architecture)
 - [Day 5: SOA](#day-5-soa)
 - [Day 6: Microservices](#day-6-microservices)
+- [Day 7: Load balancing](#day-7-load-balancing)
 
 # Day 1: Introduction to Software Architecture
 - There is no silver bullet [Fred Brooks, 1986](https://worrydream.com/refs/Brooks_1986_-_No_Silver_Bullet.pdf)
@@ -104,3 +105,8 @@ DDD Aggregate: a cluster of domain objects that can be treated as a single unit.
 Consul: a service mesh solution providing service discovery, configuration, and segmentation functionality.
 
 Feign Client: a declarative web service client that simplifies the process of making HTTP requests to other services.
+
+# Day 7: Load balancing
+Feign facilitates load balancing by distributing requests across multiple instances of a service, improving performance and reliability.
+
+API Gateway acts as a single entry point for clients, routing requests to the appropriate microservices and handling cross-cutting concerns such as authentication, logging, and rate limiting, security, filtering.
