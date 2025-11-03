@@ -9,21 +9,21 @@ import shop.products.domain.Product;
 import shop.products.service.ProductCatalogService;
 import shop.products.service.dto.ProductDTO;
 
-@RestController
-public class ProductController {
-	@Autowired
-	ProductCatalogService productCatalogService;
+// @RestController
+// public class ProductController {
+// 	@Autowired
+// 	ProductCatalogService productCatalogService;
 
-	@GetMapping("/products/{productnumber}")
-	public ResponseEntity<?> getProduct(@PathVariable String productnumber) {
-		ProductDTO productDTO = productCatalogService.getProduct(productnumber);
-		return new ResponseEntity<ProductDTO>(productDTO, HttpStatus.OK);
-	}
+// 	@GetMapping("/products/{productnumber}")
+// 	public ResponseEntity<?> getProduct(@PathVariable String productnumber) {
+// 		ProductDTO productDTO = productCatalogService.getProduct(productnumber);
+// 		return new ResponseEntity<ProductDTO>(productDTO, HttpStatus.OK);
+// 	}
 
-	@PostMapping(value = "/products")
-	public ResponseEntity<?> addProduct(@RequestBody ProductDTO productDto) {
-		productCatalogService.addProduct(productDto);
-		return new ResponseEntity<Product>(HttpStatus.OK);
-	}
+// 	@PostMapping(value = "/products")
+// 	public ResponseEntity<?> addProduct(@RequestBody ProductDTO productDto) {
+// 		productCatalogService.addProduct(productDto);
+// 		return new ResponseEntity<Product>(HttpStatus.OK);
+// 	}
 
-}
+// }

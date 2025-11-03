@@ -21,6 +21,10 @@ public class ProductChangeHandler {
               ShoppingCart cart = cartOptional.get();
               cart.updateProduct(product);
               shoppingCartRepository.save(cart);
+              shoppingCartRepository.findById("1").ifPresent(updatedCart -> {
+                  System.out.println("Updated cart after product change:");
+                  updatedCart.print();
+              });
           }
     }
 }

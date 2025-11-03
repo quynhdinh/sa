@@ -21,7 +21,9 @@ public class ShoppingController {
 	
 	@GetMapping("/cart/{cartId}")
 	public ResponseEntity<?> getCart(@PathVariable String cartId) {
+		System.out.println("Getting cart with id: " + cartId);
 		ShoppingCartDTO cart = shoppingService.getCart(cartId);
+		cart.print();
 		return new ResponseEntity<ShoppingCartDTO>(cart, HttpStatus.OK);
 	}
 

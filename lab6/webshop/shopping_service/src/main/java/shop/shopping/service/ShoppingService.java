@@ -55,10 +55,11 @@ public class ShoppingService {
 	
 	public ShoppingCartDTO getCart(String cartId) {
 		Optional<ShoppingCart> cart = shoppingCartRepository.findById(cartId);
-		if (cart.isPresent())
+		if (cart.isPresent()) {
 		  return ShoppingCartAdapter.getShoppingCartDTO(cart.get());
-		else
+		} else {
 			return null;
+		}
 	}
 }
 

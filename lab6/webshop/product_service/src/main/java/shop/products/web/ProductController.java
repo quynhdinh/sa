@@ -23,6 +23,7 @@ public class ProductController {
 
 	@PostMapping(value = "/products")
 	public ResponseEntity<?> addProduct(@RequestBody ProductDTO productDto) {
+		System.out.println("Adding product with productnumber: " + productDto.getProductnumber());
 		productCatalogService.addProduct(productDto);
 		return new ResponseEntity<Product>(HttpStatus.OK);
 	}

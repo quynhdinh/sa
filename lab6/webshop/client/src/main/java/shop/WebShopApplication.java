@@ -41,8 +41,8 @@ public class WebShopApplication implements CommandLineRunner {
 		if (cart != null) cart.print();
 
 		//change product price
-		restTemplate.postForLocation("http://localhost:8081/products", new ProductDTO("A33","TV",550.0));
-
+		restTemplate.postForLocation("http://localhost:8081/products", new ProductDTO("A35","TV",750.0));
+		Thread.sleep(2000);
 		//get the shoppingcart
 		cart = restTemplate.getForObject("http://localhost:8080/cart/1", ShoppingCartDTO.class);
 		System.out.println("\n-----Shoppingcart after price change-------");
