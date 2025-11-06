@@ -9,6 +9,7 @@ make a table of contents for the following notes:
 - [Day 5: SOA](#day-5-soa)
 - [Day 6: Microservices](#day-6-microservices)
 - [Day 7: Load balancing](#day-7-load-balancing)
+- [Day 8: Distributed Tracing: Zipkin](#day-8-distributed-tracing-zipkin)
 
 # Day 1: Introduction to Software Architecture
 - There is no silver bullet [Fred Brooks, 1986](https://worrydream.com/refs/Brooks_1986_-_No_Silver_Bullet.pdf)
@@ -110,3 +111,5 @@ Feign Client: a declarative web service client that simplifies the process of ma
 Feign facilitates load balancing by distributing requests across multiple instances of a service, improving performance and reliability.
 
 API Gateway acts as a single entry point for clients, routing requests to the appropriate microservices and handling cross-cutting concerns such as authentication, logging, and rate limiting, security, filtering.
+# Day 8: Distributed Tracing: Zipkin
+Distributed tracing: one central way where you can see end-to-end request flow across multiple services in a microservices architecture.
