@@ -10,6 +10,7 @@ make a table of contents for the following notes:
 - [Day 6: Microservices](#day-6-microservices)
 - [Day 7: Load balancing](#day-7-load-balancing)
 - [Day 8: Distributed Tracing: Zipkin](#day-8-distributed-tracing-zipkin)
+- [Day 9: CQRS and Event Sourcing](#day-9-cqrs-and-event-sourcing)
 
 # Day 1: Introduction to Software Architecture
 - There is no silver bullet [Fred Brooks, 1986](https://worrydream.com/refs/Brooks_1986_-_No_Silver_Bullet.pdf)
@@ -113,3 +114,13 @@ Feign facilitates load balancing by distributing requests across multiple instan
 API Gateway acts as a single entry point for clients, routing requests to the appropriate microservices and handling cross-cutting concerns such as authentication, logging, and rate limiting, security, filtering.
 # Day 8: Distributed Tracing: Zipkin
 Distributed tracing: one central way where you can see end-to-end request flow across multiple services in a microservices architecture.
+# Day 9: CQRS and Event Sourcing
+CQRS is simple
+
+Event sourcing is hard
+
+CQRS (Command Query Responsibility Segregation) is a design pattern that separates read and write operations into different models, allowing for optimized performance and scalability.
+
+Event Sourcing is a design pattern where state changes are captured as a sequence of events, allowing for better traceability and the ability to reconstruct past states.
+
+Kafka is often used as the event store in event sourcing implementations, providing a reliable and scalable way to store and process events. The events are stored in Kafka topics, deleted after a period of time(e.g., 7 days).
