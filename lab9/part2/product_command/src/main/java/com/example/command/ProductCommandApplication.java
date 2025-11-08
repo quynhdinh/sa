@@ -22,11 +22,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.*;
 import com.example.dto.ProductChangeEventDTO;
 import com.example.dto.ProductDeleteEventDTO;
-import com.example.command.event.ProductChangeCommand;
-import com.example.command.event.Event;
-import com.example.command.event.EventRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.Instant;
+
 @SpringBootApplication
 public class ProductCommandApplication {
 	public static void main(String[] args) {
@@ -58,6 +54,10 @@ class ProductCommandController {
 		System.out.println("Add product endpoint called: " + product);
 		return productCommandService.addProduct(product);
 	}
+	@PutMapping("/products")
+	public Product updateProduct(@RequestBody Product product) {
+	    return productCommandService.updateProduct(product);
+	}
 	// curl -X DELETE http://localhost:8081/products/P003
 	@DeleteMapping("/products/{productNumber}")
 	public void deleteProduct(@PathVariable String productNumber) {
@@ -86,54 +86,26 @@ class ProductCommandService {
 	private KafkaTemplate<String, ProductChangeEventDTO> kafkaTemplate;
 	@Autowired
 	private KafkaTemplate<String, ProductDeleteEventDTO> kafkaTemplate2;
-
+	// test endpoint
 	public Product addProduct(Product product) {
-		createOrUpdateProduct(new ProductChangeCommand(product.getProductNumber(), product.getName(), product.getPrice()));
+		// write a kafka message to notify ProductQueryService about the new product
+		kafkaTemplate.send("product-events", new ProductChangeEventDTO(product.getProductNumber(), product.getName(), product.getPrice()));
 		return productRepository.save(product);
 	}
+	// command to see all topics in kafka
+	// bin/kafka-topics.sh --list --bootstrap-server localhost:9092
 
+	public Product updateProduct(Product product) {
+		return productRepository.save(product);
+	}
 	public void deleteProduct(String productNumber) {
 		kafkaTemplate2.send("product-events", new ProductDeleteEventDTO(productNumber));
 		productRepository.deleteById(productNumber);
 	}
-
-	@Autowired
-	private EventRepository eventRepository;
-	    private final ObjectMapper mapper = new ObjectMapper();
-
-	public void createOrUpdateProduct(ProductChangeCommand cmd){
-        String aggregateId = cmd.getProductNumber();
-
-        // get last sequence for optimistic concurrency
-        Event last = eventRepository.findTopByAggregateIdOrderBySequenceDesc(aggregateId);
-        long nextSeq = last == null ? 1 : last.getSequence() + 1;
-
-        ProductChangeEventDTO evt = new ProductChangeEventDTO();
-        evt.setProductNumber(cmd.getProductNumber());
-        evt.setName(cmd.getName());
-        evt.setPrice(cmd.getPrice());
-        // serialize payload
-		String payload = null;
-		try {
-			payload = mapper.writeValueAsString(evt);
-		} catch (Exception e) {
-			throw new RuntimeException("Failed to serialize event payload", e);
-		}
-        Event doc = new Event();
-        doc.setAggregateId(aggregateId);
-        doc.setSequence(nextSeq);
-        doc.setType("ProductChanged");
-        doc.setPayload(payload);
-        doc.setTimestamp(Instant.now());
-
-        // append-only save
-        eventRepository.save(doc);
-
-        // publish so query side updates
-        kafkaTemplate.send("product-events", evt);
-    }
 }
 
+// add some product here
+// use CommandLineRunner or ApplicationRunner to add some initial products if needed
 @Component
 class DataLoader implements CommandLineRunner {
 	@Autowired

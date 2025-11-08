@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>command</artifactId>
+	<artifactId>query</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>command</name>
+	<name>query</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -60,12 +60,6 @@
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.hibernate.validator</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>6.0.9.Final</version>
-		</dependency>
-
 	</dependencies>
 
 	<build>
