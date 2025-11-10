@@ -24,7 +24,9 @@ public class ConsumerApplication {
 class OrderListener {
 	@KafkaListener(topics = "orders", groupId = "gid")
 	// also print group id and offset
-	public void listen(String message, @Header(KafkaHeaders.OFFSET) Long offset, @Header(KafkaHeaders.GROUP_ID) String groupId) {
+	public void listen(String message, 
+	@Header(KafkaHeaders.OFFSET) Long offset, 
+	@Header(KafkaHeaders.GROUP_ID) String groupId) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
 			Order order = objectMapper.readValue(message, Order.class);

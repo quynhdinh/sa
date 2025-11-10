@@ -68,6 +68,8 @@ class OrderProducer {
 	public void sendOrder(Order order) throws Exception {
 		ObjectMapper objectMapper = new ObjectMapper();
 		String writeValueAsString = objectMapper.writeValueAsString(order);
-		kafkaTemplate.send("orders", writeValueAsString);
+		// send with different key to distribute across partitions
+		// now not one consumer will get all messages
+		kafkaTemplate.send("orders", order.getOrdernumber(), writeValueAsString);
 	}
 }
