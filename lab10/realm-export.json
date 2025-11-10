@@ -1,0 +1,73 @@
+{
+  "realm": "myrealm",
+  "enabled": true,
+  "users": [
+    {
+      "username": "nobody",
+      "enabled": true,
+      "email": "nobody@gmail.com",
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "nobody"
+        }
+      ],
+      "realmRoles": ["CUSTOMER"]
+    },
+    {
+      "username": "john",
+      "enabled": true,
+      "email": "john@gmail.com",
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "john"
+        }
+      ],
+      "realmRoles": ["CUSTOMER", "EMPLOYEE"]
+    },
+    {
+      "username": "frank",
+      "enabled": true,
+      "email": "frank@gmail.com",
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "frank"
+        }
+      ],
+      "realmRoles": ["CUSTOMER", "EMPLOYEE", "MANAGER"]
+    }
+  ],
+  "roles": {
+    "realm": [
+      {
+        "name": "CUSTOMER"
+      },
+      {
+        "name": "EMPLOYEE"
+      },
+      {
+        "name": "MANAGER"
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "myclient",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "mysecret123",
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "redirectUris": ["*"],
+      "webOrigins": ["*"]
+    }
+  ]
+}
