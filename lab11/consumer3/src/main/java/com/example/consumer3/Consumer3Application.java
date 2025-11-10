@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.kafka.support.KafkaHeaders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.kafka.annotation.DltHandler;
+import org.springframework.kafka.annotation.RetryableTopic;
 
 @SpringBootApplication
 @EnableKafka
@@ -20,17 +22,26 @@ public class Consumer3Application {
 
 @Component
 class Listener {
-	// also print group id and offset
+	@RetryableTopic(attempts = "2")
 	@KafkaListener(topics = "orders", groupId = "gid", properties = {"auto.offset.reset=earliest"})
 	public void listen(String message, @Header(KafkaHeaders.OFFSET) Long offset, 
 	@Header(KafkaHeaders.GROUP_ID) String groupId) {
 		ObjectMapper objectMapper = new ObjectMapper();
+		Order order = null;
 		try {
-			Order order = objectMapper.readValue(message, Order.class);
-			System.out.println("Received Order at offset " + offset + " and group id " + groupId + ": " + order);
+			order = objectMapper.readValue(message, Order.class);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println("Received Order at offset " + offset + " and group id " + groupId + ": " + order);
+		if (true) { // simulate error for all messages
+			throw new RuntimeException("Invalid message received");
+		}
+	}
+	@DltHandler
+	public void handleDltMessage(String message, @Header(KafkaHeaders.RECEIVED_TOPIC) String
+topic, @Header(KafkaHeaders.OFFSET) long offset) {
+		System.err.println("Received from DLT: " + message);
 	}
 }
 
