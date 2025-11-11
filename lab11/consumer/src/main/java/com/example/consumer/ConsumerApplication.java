@@ -9,6 +9,7 @@ import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -42,6 +43,19 @@ class OrderListener {
 class OrderListenerBatch {
 	@KafkaListener(topics = "orders_batch", groupId = "gid")
 	// also print group id and offset
+	public void listen(String message, 
+	@Header(KafkaHeaders.OFFSET) Long offset, 
+	@Header(KafkaHeaders.GROUP_ID) String groupId) throws Exception {
+		ObjectMapper objectMapper = new ObjectMapper();
+		Order order = objectMapper.readValue(message, Order.class);
+		System.out.println("Receiving message = " + order + " at " + LocalTime.now().getSecond());
+	}
+}
+
+@Component
+class KafkaConsumerTX {
+	@Transactional
+	@KafkaListener(topics = "orders_tx", groupId = "gid-tx")
 	public void listen(String message, 
 	@Header(KafkaHeaders.OFFSET) Long offset, 
 	@Header(KafkaHeaders.GROUP_ID) String groupId) throws Exception {

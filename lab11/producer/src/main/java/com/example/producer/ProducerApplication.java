@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -24,6 +25,7 @@ public class ProducerApplication implements CommandLineRunner {
 
 	private final OrderProducer orderProducer;
 	private final OrderProducerBatch orderProducerBatch;
+	private final KafkaProducerTX kafkaProducerTX;
 	public static void main(String[] args) {
 		SpringApplication.run(ProducerApplication.class, args);
 	}
@@ -39,7 +41,12 @@ public class ProducerApplication implements CommandLineRunner {
 		// orderProducer.sendOrder(order3);
 		// orderProducer.sendOrder(order4);
 		// orderProducer.sendOrder(order5);
-		orderProducerBatch.sendOrdersBatch();
+
+		// orderProducerBatch.sendOrdersBatch();
+
+		kafkaProducerTX.sendOrderInTransaction();
+
+
 	}
 
 	@Bean
@@ -54,6 +61,13 @@ public class ProducerApplication implements CommandLineRunner {
 	@Bean
 	public NewTopic ordersBatchTopic() {
 		return TopicBuilder.name("orders_batch")
+				.partitions(1)
+				.replicas(1)
+				.build();
+	}
+	@Bean
+	public NewTopic ordersTxTopic() {
+		return TopicBuilder.name("orders_tx")
 				.partitions(1)
 				.replicas(1)
 				.build();
@@ -99,6 +113,27 @@ class OrderProducerBatch {
 			String writeValueAsString = objectMapper.writeValueAsString(order);
 			kafkaTemplate.send("orders_batch", "BATCH_ORDER_" + i, writeValueAsString);
 			Thread.sleep(2000);
+		}
+	}
+}
+
+@Service
+class KafkaProducerTX {
+	@Autowired 
+	private KafkaTemplate<String, String> kafkaTemplate;
+
+	@Transactional
+	public void sendOrderInTransaction() throws Exception {
+		ObjectMapper objectMapper = new ObjectMapper();
+		for(int i = 0; i < 10; i++){
+			Order order = new Order("TX_ORDER_" + i, "Customer_" + i, "Country_" + i, i * 10.0, "NEW");
+			String writeValueAsString = objectMapper.writeValueAsString(order);
+			kafkaTemplate.send("orders_tx", "TX_ORDER_" + i, writeValueAsString);
+			if(i > 5) {
+				// throw new RuntimeException("Simulated error in transaction");
+			}
+			System.out.println("Sent order in transaction: " + writeValueAsString);
+			Thread.sleep(1000);
 		}
 	}
 }
