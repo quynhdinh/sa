@@ -1,5 +1,7 @@
 package com.example.consumer;
 
+import java.time.LocalTime;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -34,6 +36,18 @@ class OrderListener {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+}
+@Component
+class OrderListenerBatch {
+	@KafkaListener(topics = "orders_batch", groupId = "gid")
+	// also print group id and offset
+	public void listen(String message, 
+	@Header(KafkaHeaders.OFFSET) Long offset, 
+	@Header(KafkaHeaders.GROUP_ID) String groupId) throws Exception {
+		ObjectMapper objectMapper = new ObjectMapper();
+		Order order = objectMapper.readValue(message, Order.class);
+		System.out.println("Receiving message = " + order + " at " + LocalTime.now().getSecond());
 	}
 }
 record Order (
